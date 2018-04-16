@@ -1,0 +1,40 @@
+---
+# Copyright (c) 2018 NTT DATA
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Deploy masakari configuration files
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "{{ masakari_system_group_name }}"
+    mode: "0640"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  when: item.condition | default(True)
+  with_items:
+    - src: "api-paste.ini.j2"
+      dest: "/etc/masakari/api-paste.ini"
+      config_overrides: "{{ masakari_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "masakari.conf.j2"
+      dest: "/etc/masakari/masakari.conf"
+      config_overrides: "{{ masakari_masakari_conf_overrides }}"
+      config_type: "ini"
+    - src: "policy.json.j2"
+      dest: "/etc/masakari/policy.json"
+      config_overrides: "{{ masakari_policy_json_overrides }}"
+      config_type: "json"
+  notify:
+    - Restart masakari services

@@ -1,0 +1,115 @@
+---
+# Copyright (c) 2018 NTT DATA
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Verbosity Options
+debug: False
+
+masakari_role_project_group: masakari_all
+
+# Set the package install state for distribution and pip packages
+# Options are 'present' and 'latest'
+masakari_package_state: "latest"
+masakari_pip_package_state: "latest"
+
+masakari_git_repo: https://git.openstack.org/openstack/masakari
+masakari_git_install_branch: master
+masakari_developer_mode: false
+masakari_developer_constraints:
+  - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
+
+## System info
+masakari_system_user_name: masakari
+masakari_system_group_name: masakari
+masakari_system_shell: /bin/false
+masakari_system_comment: masakari system user
+masakari_system_user_home: "/var/lib/{{ masakari_system_user_name }}"
+
+# masakari packages that must be installed before anything else
+masakari_requires_pip_packages:
+  - virtualenv
+  - python-masakariclient
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+
+
+# venv_download, even when true, will use the fallback method of building the
+# venv from scratch if the venv download fails.
+masakari_venv_download: "{{ not masakari_developer_mode | bool }}"
+
+# Name of the virtual env to deploy into
+masakari_bin: "/openstack/venvs/masakari-{{ masakari_venv_tag }}/bin"
+
+# Common pip packages
+masakari_pip_packages:
+  - cryptography
+  - masakari
+  - keystonemiddleware
+  - PyMySQL
+  - python-masakariclient
+  - python-novaclient
+  - python-keystoneclient
+  - python-memcached
+  - python-swiftclient
+  - uwsgi
+  - keystoneauth1
+
+## Tunable overrides
+masakari_api_paste_ini_overrides: {}
+masakari_masakari_conf_overrides: {}
+masakari_policy_json_overrides: {}
+masakari_api_init_overrides: {}
+
+## Service Type and Data
+masakari_service_region: RegionOne
+masakari_service_name: masakari
+masakari_service_port: 15868
+masakari_service_proto: http
+masakari_service_registry_proto: "{{ masakari_service_proto }}"
+masakari_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(masakari_service_proto) }}"
+masakari_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(masakari_service_proto) }}"
+masakari_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(masakari_service_proto) }}"
+masakari_service_type: ha
+masakari_service_description: "Masakari ha Service"
+masakari_service_user_name: masakari
+masakari_service_project_name: service
+masakari_service_project_domain_id: default
+masakari_service_user_domain_id: default
+masakari_service_publicuri: "{{ masakari_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ masakari_service_port }}"
+masakari_service_publicurl: "{{ masakari_service_publicuri }}/v1/%(tenant_id)s"
+masakari_service_internaluri: "{{ masakari_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ masakari_service_port }}"
+masakari_service_internalurl: "{{ masakari_service_internaluri }}/v1/%(tenant_id)s"
+masakari_service_adminuri: "{{ masakari_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ masakari_service_port }}"
+masakari_service_adminurl: "{{ masakari_service_adminuri }}/v1/%(tenant_id)s"
+
+masakari_service_in_ldap: false
+
+masakari_role_name: admin
+masakari_api_bind_address: 0.0.0.0
+masakari_api_service_port: 15868
+
+## API options
+masakari_enable_v1_api: True
+
+masakari_etc_dir: /etc/masakari
+masakari_log_dir: /var/log/masakari
+masakari_config_options: --config-file {{ masakari_etc_dir }}/masakari.conf
+
+## Services
+masakari_services:
+  masakari-api:
+    group: masakari_api
+    service_name: masakari-api
+  masakari-engine:
+    group: masakari_engine
+    service_name: masakari-engine
