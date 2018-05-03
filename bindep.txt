@@ -1,5 +1,3 @@
-# Copyright (c) 2018 NTT DATA
-#
 # This file facilitates OpenStack-CI package installation
 # before the execution of any tests.
 #
