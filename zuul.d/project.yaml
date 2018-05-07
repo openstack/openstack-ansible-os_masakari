@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2018 NTT DATA
+# Copyright 2018, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Restart masakari services
-  service:
-    name: "{{ item.value.service_name }}"
-    state: restarted
-    daemon_reload: yes
-  with_dict: "{{ masakari-services }}"
-  when: inventory_hostname in groups[item.value.group]
-
+- project:
+    check:
+      jobs:
+        - openstack-ansible-linters
+        - openstack-ansible-functional-centos-7-nv
+        - openstack-ansible-functional-opensuse-423-nv
+        - openstack-ansible-functional-ubuntu-xenial-nv
+    gate:
+      jobs:
+        - openstack-ansible-linters
