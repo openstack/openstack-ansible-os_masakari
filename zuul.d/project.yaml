@@ -17,9 +17,12 @@
     check:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-functional-centos-7-nv
-        - openstack-ansible-functional-opensuse-423-nv
-        - openstack-ansible-functional-ubuntu-xenial-nv
+        - openstack-ansible-functional-centos-7:
+            voting: false
+        - openstack-ansible-functional-opensuse-423:
+            voting: false
+        - openstack-ansible-functional-ubuntu-xenial:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-linters
