@@ -55,6 +55,7 @@ masakari_pip_packages:
   - cryptography
   - masakari
   - keystonemiddleware
+  - osprofiler
   - PyMySQL
   - python-masakariclient
   - python-novaclient
