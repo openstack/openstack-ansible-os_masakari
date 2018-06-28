@@ -25,9 +25,6 @@
       user_name: "{{ masakari_rabbitmq_userid }}"
       user_password: "{{ masakari_rabbitmq_password }}"
       when: groups['rabbitmq_all'] is defined
-    - include: common/create-grant-db.yml
-      db_name: "{{ masakari_galera_database }}"
-      db_password: "{{ masakari_container_mysql_password }}"
   roles:
     - role: os_masakari
   vars_files:
