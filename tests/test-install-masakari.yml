@@ -16,7 +16,6 @@
 - name: Playbook for deploying masakari
   hosts: masakari_all
   user: root
-  become: true
   gather_facts: true
   any_errors_fatal: true
   pre_tasks:
