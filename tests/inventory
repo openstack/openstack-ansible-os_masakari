@@ -24,14 +24,15 @@ memcached_all
 [keystone_all]
 infra1
 
-[masakari_all]
-masakari1
+[masakari_all:children]
+masakari_api
+masakari_engine
 
 [utility_all]
 masakari1
 
 [masakari_api]
-masakari
+masakari1
 
-[masakari_all]
+[masakari_engine]
 masakari1

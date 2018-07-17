@@ -124,9 +124,9 @@
     section: masakari
     option: need_service_restart
     value: True
-  when: (masakari_get_venv | changed) or
-        (masakari_venv_dir | changed) or
-        (install_packages | changed) or
+  when: (masakari_get_venv is changed) or
+        (masakari_venv_dir is changed) or
+        (install_packages is changed) or
         (ansible_local is not defined) or
         ('openstack_ansible' not in ansible_local) or
         ('masakari' not in ansible_local['openstack_ansible']) or
