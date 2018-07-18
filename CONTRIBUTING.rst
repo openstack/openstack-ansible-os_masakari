@@ -1,5 +1,5 @@
 OpenStack-Ansible Masakari
-########################
+##########################
 tags: openstack, masakari, cloud, ansible
 :category: \*nix
 
