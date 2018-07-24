@@ -14,16 +14,21 @@
 # limitations under the License.
 
 masakari_service_tenant_name: service
-masakari_rabbitmq_port: "{{ rabbitmq_port }}"
-masakari_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-masakari_rabbitmq_servers: "{{ rabbitmq_servers }}"
-masakari_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+masakari_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+masakari_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+masakari_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+masakari_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+masakari_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+masakari_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+masakari_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+masakari_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 masakari_service_publicuri: "{{ masakari_service_proto }}://{{ hostvars[groups['masakari_all'][0]]['ansible_host'] }}:{{ masakari_service_port }}"
 masakari_service_adminurl: "{{ masakari_service_proto }}://{{ hostvars[groups['masakari_all'][0]]['ansible_host'] }}:{{ masakari_service_port }}"
 masakari_service_adminuri: "{{ masakari_service_proto }}://{{ hostvars[groups['masakari_all'][0]]['ansible_host'] }}:{{ masakari_service_port }}"
 masakari_aodh_enabled: false
 masakari_gnocchi_enabled: false
-masakari_rabbitmq_password: "secrete"
+masakari_oslomsg_rpc_password: "secrete"
+masakari_oslomsg_notify_password: "{{ masakari_oslomsg_rpc_password }}"
 masakari_service_password: "secrete"
 masakari_container_mysql_password: "secrete"
 masakari_developer_mode: true
