@@ -33,7 +33,7 @@
 
 - name: Create masakari dir
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.path | realpath }}"
     state: directory
     owner: "{{ item.owner|default(masakari_system_user_name) }}"
     group: "{{ item.group|default(masakari_system_group_name) }}"
@@ -41,29 +41,8 @@
   with_items:
     - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "{{ masakari_etc_dir }}", mode: "0750" }
-    - { path: "/var/cache/masakari" }
+    - { path: "{{ masakari_log_dir }}", mode: "0755" }
     - { path: "{{ masakari_system_user_home }}" }
     - { path: "{{ masakari_system_user_home }}/cache/api", mode: "0700" }
     - { path: "{{ masakari_system_user_home }}/cache/registry" }
     - { path: "{{ masakari_system_user_home }}/scrubber" }
-
-- name: Test for log directory or link
-  shell: |
-    if [ -h "/var/log/masakari"  ]; then
-      chown -h {{ masakari_system_user_name }}:{{ masakari_system_group_name }} "/var/log/masakari"
-      chown -R {{ masakari_system_user_name }}:{{ masakari_system_group_name }} "$(readlink /var/log/masakari)"
-    else
-      exit 1
-    fi
-  register: log_dir
-  failed_when: false
-  changed_when: log_dir.rc != 0
-
-- name: Create masakari log dir
-  file:
-    path: "/var/log/masakari"
-    state: directory
-    owner: "{{ masakari_system_user_name }}"
-    group: "{{ masakari_system_group_name }}"
-    mode: "0755"
-  when: log_dir.rc != 0
