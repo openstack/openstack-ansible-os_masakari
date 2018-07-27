@@ -43,7 +43,8 @@
 
 - include_tasks: mq_setup.yml
   when:
-    - inventory_hostname == groups['masakari_all'][0]
+    - "masakari_services['masakari-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
   with_items:
     - oslomsg_setup_host: "{{ masakari_oslomsg_rpc_setup_host }}"
       oslomsg_userid: "{{ masakari_oslomsg_rpc_userid }}"
@@ -62,14 +63,14 @@
 - include: masakari_db_setup.yml
   static: no
   when:
-    - inventory_hostname == groups['masakari_all'][0]
-  tags:
-    - masakari-config
+    - "masakari_services['masakari-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
 
 - include: masakari_service_setup.yml
   static: no
   when:
-    - inventory_hostname == groups['masakari_all'][0]
+    - "masakari_services['masakari-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
   tags:
     - masakari-config
 
