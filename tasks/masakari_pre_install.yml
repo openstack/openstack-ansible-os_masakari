@@ -40,7 +40,7 @@
     mode: "{{ item.mode|default(omit) }}"
   with_items:
     - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
-    - { path: "/etc/masakari", mode: "0750" }
+    - { path: "{{ masakari_etc_dir }}", mode: "0750" }
     - { path: "/var/cache/masakari" }
     - { path: "{{ masakari_system_user_home }}" }
     - { path: "{{ masakari_system_user_home }}/cache/api", mode: "0700" }
