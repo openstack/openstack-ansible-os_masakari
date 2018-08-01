@@ -41,17 +41,35 @@
   tags:
     - masakari-config
 
+- include_tasks: mq_setup.yml
+  when:
+    - inventory_hostname == groups['masakari_all'][0]
+  with_items:
+    - oslomsg_setup_host: "{{ masakari_oslomsg_rpc_setup_host }}"
+      oslomsg_userid: "{{ masakari_oslomsg_rpc_userid }}"
+      oslomsg_password: "{{ masakari_oslomsg_rpc_password }}"
+      oslomsg_vhost: "{{ masakari_oslomsg_rpc_vhost }}"
+      oslomsg_transport: "{{ masakari_oslomsg_rpc_transport }}"
+    - oslomsg_setup_host: "{{ masakari_oslomsg_notify_setup_host }}"
+      oslomsg_userid: "{{ masakari_oslomsg_notify_userid }}"
+      oslomsg_password: "{{ masakari_oslomsg_notify_password }}"
+      oslomsg_vhost: "{{ masakari_oslomsg_notify_vhost }}"
+      oslomsg_transport: "{{ masakari_oslomsg_notify_transport }}"
+  no_log: true
+  tags:
+    - masakari-config
+
 - include: masakari_db_setup.yml
   static: no
   when:
-    inventory_hostname == groups['masakari_all'][0]
+    - inventory_hostname == groups['masakari_all'][0]
   tags:
     - masakari-config
 
 - include: masakari_service_setup.yml
   static: no
   when:
-    inventory_hostname == groups['masakari_all'][0]
+    - inventory_hostname == groups['masakari_all'][0]
   tags:
     - masakari-config
 

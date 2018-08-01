@@ -18,15 +18,7 @@
   user: root
   gather_facts: true
   any_errors_fatal: true
-  pre_tasks:
-    - include: common/ensure-oslomsg.yml
-      rpc_vhost: "{{ masakari_oslomsg_rpc_vhost }}"
-      rpc_user: "{{ masakari_oslomsg_rpc_userid }}"
-      rpc_password: "{{ masakari_oslomsg_rpc_password }}"
-      notify_vhost: "{{ masakari_oslomsg_notify_vhost }}"
-      notify_user: "{{ masakari_oslomsg_notify_userid }}"
-      notify_password: "{{ masakari_oslomsg_notify_password }}"
-  roles:
-    - role: os_masakari
   vars_files:
     - common/test-vars.yml
+  roles:
+    - role: os_masakari
