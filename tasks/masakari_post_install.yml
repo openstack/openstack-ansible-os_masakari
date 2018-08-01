@@ -25,15 +25,15 @@
   when: item.condition | default(True)
   with_items:
     - src: "api-paste.ini.j2"
-      dest: "/etc/masakari/api-paste.ini"
+      dest: "{{ masakari_etc_dir }}/api-paste.ini"
       config_overrides: "{{ masakari_api_paste_ini_overrides }}"
       config_type: "ini"
     - src: "masakari.conf.j2"
-      dest: "/etc/masakari/masakari.conf"
+      dest: "{{ masakari_etc_dir }}/masakari.conf"
       config_overrides: "{{ masakari_masakari_conf_overrides }}"
       config_type: "ini"
     - src: "policy.json.j2"
-      dest: "/etc/masakari/policy.json"
+      dest: "{{ masakari_etc_dir }}/policy.json"
       config_overrides: "{{ masakari_policy_json_overrides }}"
       config_type: "json"
   notify:

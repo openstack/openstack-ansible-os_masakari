@@ -37,7 +37,7 @@ service_down_time = 60
 
 [wsgi]
 # The paste configuration file path
-api_paste_config = /etc/masakari/api-paste.ini
+api_paste_config = {{ masakari_etc_dir }}/api-paste.ini
 
 [keystone_authtoken]
 auth_url = {{ keystone_service_adminuri }}
