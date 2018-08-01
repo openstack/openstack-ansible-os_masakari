@@ -43,11 +43,11 @@ api_paste_config = {{ masakari_etc_dir }}/api-paste.ini
 auth_url = {{ keystone_service_adminuri }}
 www_authenticate_uri = {{ keystone_service_internaluri }}
 auth_type = password
-project_domain_id = default
-user_domain_id = default
-project_name = service
-username = masakari
-password = masakari
+project_domain_id = {{ masakari_service_user_domain_id }}
+user_domain_id = {{ masakari_service_project_domain_id }}
+project_name = {{ masakari_service_project_name }}
+username = {{ masakari_service_user_name }}
+password = {{ masakari_service_password }}
 
 [database]
 connection = mysql+pymysql://{{ masakari_galera_user }}:{{ masakari_container_mysql_password }}@{{ masakari_galera_address }}/{{ masakari_galera_database }}?charset=utf8{% if masakari_galera_use_ssl | bool %}&ssl_ca={{ masakari_galera_ssl_ca_cert }}{% endif %}
