@@ -11,9 +11,9 @@ User={{ masakari_system_user_name }}
 Group={{ masakari_system_group_name }}
 
 {% if item.value.program_override is defined %}
-ExecStart={{ item.value.program_override }} {{ item.value.program_config_options|default('') }} {{ item.value.log_string | default('--log-file=') }}/var/log/masakari/{{ item.value.service_name }}.log
+ExecStart={{ item.value.program_override }} {{ item.value.program_config_options|default('') }} {{ item.value.log_string | default('--log-file=') }}/{{ masakari_log_dir }}/{{ item.value.service_name }}.log
 {% else %}
-ExecStart={{ masakari_bin }}/{{ item.value.service_name }} {{ item.value.program_config_options|default('') }} --log-file=/var/log/masakari/{{ item.value.service_name }}.log
+ExecStart={{ masakari_bin }}/{{ item.value.service_name }} {{ item.value.program_config_options|default('') }} --log-file={{ masakari_log_dir }}/{{ item.value.service_name }}.log
 {% endif %}
 
 # Give a reasonable amount of time for the server to start up/shut down
