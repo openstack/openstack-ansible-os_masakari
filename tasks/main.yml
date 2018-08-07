@@ -41,23 +41,23 @@
   tags:
     - masakari-config
 
-- include_tasks: mq_setup.yml
+- import_tasks: mq_setup.yml
   when:
     - "masakari_services['masakari-api']['group'] in group_names"
     - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
-  with_items:
-    - oslomsg_setup_host: "{{ masakari_oslomsg_rpc_setup_host }}"
-      oslomsg_userid: "{{ masakari_oslomsg_rpc_userid }}"
-      oslomsg_password: "{{ masakari_oslomsg_rpc_password }}"
-      oslomsg_vhost: "{{ masakari_oslomsg_rpc_vhost }}"
-      oslomsg_transport: "{{ masakari_oslomsg_rpc_transport }}"
-    - oslomsg_setup_host: "{{ masakari_oslomsg_notify_setup_host }}"
-      oslomsg_userid: "{{ masakari_oslomsg_notify_userid }}"
-      oslomsg_password: "{{ masakari_oslomsg_notify_password }}"
-      oslomsg_vhost: "{{ masakari_oslomsg_notify_vhost }}"
-      oslomsg_transport: "{{ masakari_oslomsg_notify_transport }}"
-  no_log: true
+  vars:
+    _oslomsg_rpc_setup_host: "{{ masakari_oslomsg_rpc_setup_host }}"
+    _oslomsg_rpc_userid: "{{ masakari_oslomsg_rpc_userid }}"
+    _oslomsg_rpc_password: "{{ masakari_oslomsg_rpc_password }}"
+    _oslomsg_rpc_vhost: "{{ masakari_oslomsg_rpc_vhost }}"
+    _oslomsg_rpc_transport: "{{ masakari_oslomsg_rpc_transport }}"
+    _oslomsg_notify_setup_host: "{{ masakari_oslomsg_notify_setup_host }}"
+    _oslomsg_notify_userid: "{{ masakari_oslomsg_notify_userid }}"
+    _oslomsg_notify_password: "{{ masakari_oslomsg_notify_password }}"
+    _oslomsg_notify_vhost: "{{ masakari_oslomsg_notify_vhost }}"
+    _oslomsg_notify_transport: "{{ masakari_oslomsg_notify_transport }}"
   tags:
+    - common-mq
     - masakari-config
 
 - include: masakari_db_setup.yml
