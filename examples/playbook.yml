@@ -1,3 +1,4 @@
+---
 - name: Install masakari server
   hosts: masakari_all
   user: root
