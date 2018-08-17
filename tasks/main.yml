@@ -25,19 +25,19 @@
   tags:
     - always
 
-- include: masakari_pre_install.yml
+- include_tasks: masakari_pre_install.yml
   tags:
     - masakari-install
 
-- include: masakari_install.yml
+- include_tasks: masakari_install.yml
   tags:
     - masakari-install
 
-- include: masakari_post_install.yml
+- include_tasks: masakari_post_install.yml
   tags:
     - masakari-config
 
-- include: masakari_init_common.yml
+- include_tasks: masakari_init_common.yml
   tags:
     - masakari-config
 
@@ -66,7 +66,7 @@
     - "masakari_services['masakari-api']['group'] in group_names"
     - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
 
-- include: masakari_service_setup.yml
+- include_tasks: masakari_service_setup.yml
   static: no
   when:
     - "masakari_services['masakari-api']['group'] in group_names"
