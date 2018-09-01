@@ -20,6 +20,8 @@
     daemon_reload: yes
   with_dict: "{{ masakari_services }}"
   when: inventory_hostname in groups[item.value.group]
+  listen:
+    - "venv changed"
 
 - meta: noop
   listen: Manage LB

@@ -13,17 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install distro packages
-  package:
-    name: "{{ masakari_distro_packages }}"
-    state: "{{ masakari_package_state }}"
-    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
-    cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
-  register: install_packages
-  until: install_packages is success
-  retries: 5
-  delay: 2
-
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
 - name: Create developer mode constraint file
   copy:
     dest: "/opt/developer-pip-constraints.txt"
@@ -33,123 +28,22 @@
       {% endfor %}
   when: masakari_developer_mode | bool
 
-- name: Retrieve checksum for venv download
-  uri:
-    url: "{{ masakari_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: yes
-  register: masakari_venv_checksum
-  when: masakari_venv_download | bool
-
-- name: Attempt venv download
-  get_url:
-    url: "{{ masakari_venv_download_url }}"
-    dest: "/var/cache/{{ masakari_venv_download_url | basename }}"
-    checksum: "sha1:{{ masakari_venv_checksum.content | trim }}"
-  register: masakari_get_venv
-  when: masakari_venv_download | bool
-
-- name: Remove existing venv
-  file:
-    path: "{{ masakari_bin | dirname }}"
-    state: absent
-  when: masakari_get_venv is changed
-
-- name: Create masakari venv dir
-  file:
-    path: "{{ masakari_bin | dirname }}"
-    state: directory
-  register: masakari_venv_dir
-  when: masakari_get_venv is changed
-
-- name: Unarchive pre-built venv
-  unarchive:
-    src: "/var/cache/{{ masakari_venv_download_url | basename }}"
-    dest: "{{ masakari_bin | dirname }}"
-    copy: "no"
-  when: masakari_get_venv is changed
-  notify:
-    - Manage LB
-    - Restart masakari services
-
-- name: Install pip packages
-  pip:
-    name: "{{ masakari_pip_packages }}"
-    state: "{{ masakari_pip_package_state }}"
-    virtualenv: "{{ masakari_bin | dirname }}"
-    virtualenv_site_packages: "no"
-    extra_args: >-
-      {{ masakari_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
-      {{ pip_install_options | default('') }}
-  register: install_packages
-  until: install_packages is success
-  retries: 5
-  delay: 2
-  when: masakari_get_venv | failed or masakari_get_venv | skipped
-  notify:
-    - Manage LB
-    - Restart masakari services
-
-- name: Remove python from path first (CentOS, openSUSE)
-  file:
-    path:  "{{ masakari_bin | dirname }}/bin/python2.7"
-    state: "absent"
+- name: Ensure remote wheel building is disabled in developer mode
+  set_fact:
+    venv_build_host: "{{ ansible_hostname }}"
   when:
-    - ansible_pkg_mgr in ['yum', 'dnf', 'zypper']
-    - masakari_get_venv is changed
+    - masakari_developer_mode | bool
 
-# NOTE(odyssey4me):
-# We reinitialize the venv to ensure that the right
-# version of python is in the venv, but we do not
-# want virtualenv to also replace pip, setuptools
-# and wheel so we tell it not to.
-# We do not use --always-copy for CentOS/SuSE due
-# to https://github.com/pypa/virtualenv/issues/565
-- name: Update virtualenv path
-  shell: |
-    find {{ masakari_bin }} -name \*.pyc -delete
-    sed -si '1s/^.*python.*$/#!{{ masakari_bin | replace ('/','\/') }}\/python/' {{ masakari_bin }}/*
-    virtualenv {{ masakari_bin | dirname }} \
-        {{ (ansible_pkg_mgr == 'apt') | ternary('--always-copy', '') }} \
-        --no-pip \
-        --no-setuptools \
-        --no-wheel
-  when: masakari_get_venv is changed
-  tags:
-    - skip_ansible_lint
-
-- name: Install optional pip packages
-  pip:
-    name: "{{ masakari_optional_oslomsg_amqp1_pip_packages }}"
-    state: "{{ masakari_pip_package_state }}"
-    virtualenv: "{{ masakari_bin | dirname }}"
-    virtualenv_site_packages: "no"
-  when: masakari_oslomsg_amqp1_enabled
-  register: install_optional_packages
-  until: install_optional_packages is success
-  retries: 5
-  delay: 2
-  notify:
-    - Manage LB
-    - Restart masakari services
-
-- name: Record the need for a service restart
-  ini_file:
-    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-    section: masakari
-    option: need_service_restart
-    value: True
-  when: (masakari_get_venv is changed) or
-        (masakari_venv_dir is changed) or
-        (install_packages is changed) or
-        (ansible_local is not defined) or
-        ('openstack_ansible' not in ansible_local) or
-        ('masakari' not in ansible_local['openstack_ansible']) or
-        ('need_service_restart' not in ansible_local['openstack_ansible']['masakari'])
-
-- name: Record the venv tag deployed
-  ini_file:
-    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
-    section: masakari
-    option: venv_tag
-    value: "{{ masakari_venv_tag }}"
+- name: Install the python venv
+  include_role:
+    name: "python_venv_build"
+    private: yes
+  vars:
+    venv_install_destination_path: "{{ masakari_bin | dirname }}"
+    venv_install_distro_package_list: "{{ masakari_distro_packages }}"
+    venv_pip_install_args: "{{ masakari_pip_install_args }}"
+    venv_pip_packages: "{{ (masakari_oslomsg_amqp1_enabled | bool) | ternary(masakari_pip_packages + masakari_optional_oslomsg_amqp1_pip_packages, masakari_pip_packages) }}"
+    venv_facts_when_changed:
+      - section: "masakari"
+        option: "venv_tag"
+        value: "{{ masakari_venv_tag }}"

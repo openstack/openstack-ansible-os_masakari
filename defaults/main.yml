@@ -52,8 +52,19 @@ masakari_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/ga
 masakari_venv_download: "{{ not masakari_developer_mode | bool }}"
 masakari_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/masakari.tgz
 
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
+masakari_pip_install_args: >-
+  {{ masakari_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+  {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''), '') }}
+  {{ pip_install_options | default('') }}
+
 # Name of the virtual env to deploy into
-masakari_venv_tag: untagged
+masakari_venv_tag: "{{ venv_tag | default('untagged') }}"
 masakari_bin: "/openstack/venvs/masakari-{{ masakari_venv_tag }}/bin"
 
 # Common pip packages
