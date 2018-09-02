@@ -60,8 +60,7 @@
     - common-mq
     - masakari-config
 
-- include: masakari_db_setup.yml
-  static: no
+- include_tasks: masakari_db_setup.yml
   when:
     - "masakari_services['masakari-api']['group'] in group_names"
     - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
