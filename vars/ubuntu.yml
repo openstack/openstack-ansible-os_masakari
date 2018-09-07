@@ -20,5 +20,3 @@ cache_timeout: 600
 masakari_distro_packages:
   - git
   - libxml2-dev
-  - rpcbind
-  - rsync
