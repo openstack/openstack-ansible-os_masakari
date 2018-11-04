@@ -1,5 +1,0 @@
-# {{ ansible_managed }}
-
-D /var/lock/{{ item.value.service_name }} 2755 {{ masakari_system_user_name }} {{ masakari_system_group_name }}
-D /var/run/{{ item.value.service_name }} 2755 {{ masakari_system_user_name }} {{ masakari_system_group_name }}
-

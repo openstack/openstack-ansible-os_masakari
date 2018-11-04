@@ -13,20 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-masakari_distro_packages:
-  - cronie
-  - cronie-anacron
-  - git-core
-  - rpcbind
-  - which
-
-masakari_devel_distro_packages:
-  - libxml2-devel
-  - systemd-devel
-
-masakari_monitor_distro_packages:
-  - "{{ (ansible_distribution_version is version ('42', '>=')) | ternary('libvirt-python', 'python2-libvirt-python') }}"
-  - systemd-devel
-
-masakari_monitor_packages_to_symlink:
-  - "{{ (ansible_distribution_version is version ('42', '>=')) | ternary('libvirt-python', 'python2-libvirt-python') }}"
+masakari_venv_pip_packages: |-
+  {% set pip_packages = [] %}
+  {% if masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names %}
+  {%   set _ = pip_packages.extend(masakari_pip_packages) %}
+  {% endif %}
+  {% if 'masakari_monitor' in group_names %}
+  {%   set _ = pip_packages.extend(masakari_monitor_pip_packages) %}
+  {% endif %}
+  {% if masakari_oslomsg_amqp1_enabled | bool %}
+  {%   set _ =  pip_packages.extend(masakari_optional_oslomsg_amqp1_pip_packages) %}
+  {% endif %}
+  {{ pip_packages }}
