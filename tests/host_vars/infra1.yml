@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ansible_host: 10.1.0.2
+ansible_host: 10.1.1.101
+container_name: infra1
 ansible_become: True
 ansible_user: root
-container_name: infra1

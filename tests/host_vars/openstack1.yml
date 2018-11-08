@@ -13,15 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include_tasks: masakari_init_systemd.yml
-  when:
-    - ansible_service_mgr == 'systemd'
-
-- name: Load service
-  service:
-    name: "{{ item.value.service_name }}"
-    enabled: "yes"
-  with_dict: "{{ masakari_services }}"
-  when: inventory_hostname in groups[item.value.group]
-  notify:
-    - Restart masakari services
+ansible_host: 10.1.1.102
+container_name: openstack1
+ansible_become: True
+ansible_user: root

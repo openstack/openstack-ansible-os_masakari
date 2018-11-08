@@ -22,6 +22,9 @@
 # Install Keystone
 - import_playbook: common/test-install-keystone.yml
 
+# Install Nova
+- import_playbook: common/test-install-nova.yml
+
 # Install Masakari
 - import_playbook: test-install-masakari.yml
 

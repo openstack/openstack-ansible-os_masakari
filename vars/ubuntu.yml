@@ -16,7 +16,16 @@
 ## APT Cache options
 cache_timeout: 600
 
-# Common apt packages
 masakari_distro_packages:
   - git
+
+masakari_devel_distro_packages:
+  - libsystemd-dev
   - libxml2-dev
+
+masakari_monitor_distro_packages:
+  - libsystemd-dev
+  - python-libvirt
+
+masakari_monitor_packages_to_symlink:
+  - python-libvirt

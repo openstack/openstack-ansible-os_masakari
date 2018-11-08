@@ -37,9 +37,33 @@
   tags:
     - masakari-config
 
-- include_tasks: masakari_init_common.yml
+- name: Run the systemd service role
+  include_role:
+    name: systemd_service
+    private: true
+  vars:
+    systemd_user_name: "{{ masakari_system_user_name }}"
+    systemd_group_name: "{{ masakari_system_group_name }}"
+    systemd_tempd_prefix: openstack
+    systemd_slice_name: masakari
+    systemd_lock_path: /var/lock/masakari
+    systemd_CPUAccounting: true
+    systemd_BlockIOAccounting: true
+    systemd_MemoryAccounting: true
+    systemd_TasksAccounting: true
+    systemd_services: |-
+      {% set services = [] %}
+      {% for service in masakari_services.values() %}
+      {%   if service.group in group_names %}
+      {%     set _ = service.update({'enabled': 'yes', 'state': 'started'}) %}
+      {%     set _ = service.pop('group') %}
+      {%     set _ = services.append(service) %}
+      {%   endif %}
+      {% endfor %}
+      {{ services }}
   tags:
     - masakari-config
+    - systemd-service
 
 - import_tasks: mq_setup.yml
   when:

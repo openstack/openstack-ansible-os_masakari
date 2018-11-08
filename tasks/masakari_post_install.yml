@@ -28,13 +28,36 @@
       dest: "{{ masakari_etc_dir }}/api-paste.ini"
       config_overrides: "{{ masakari_api_paste_ini_overrides }}"
       config_type: "ini"
+      condition: "{{ masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names }}"
     - src: "masakari.conf.j2"
       dest: "{{ masakari_etc_dir }}/masakari.conf"
       config_overrides: "{{ masakari_masakari_conf_overrides }}"
       config_type: "ini"
+      condition: "{{ masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names }}"
     - src: "policy.json.j2"
       dest: "{{ masakari_etc_dir }}/policy.json"
       config_overrides: "{{ masakari_policy_json_overrides }}"
       config_type: "json"
+      condition: "{{ masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names }}"
+    - src: "masakarimonitors.conf.j2"
+      dest: "{{ masakari_monitor_etc_dir }}/masakarimonitors.conf"
+      config_overrides: "{{ masakari_monitors_conf_overrides }}"
+      config_type: "ini"
+      condition: "{{ 'masakari_monitor' in group_names }}"
+    - src: "process_list.yaml.j2"
+      dest: "{{ masakari_monitor_etc_dir }}/process_list.yaml"
+      config_overrides: "{{ masakari_monitors_process_overrides }}"
+      config_type: "yaml"
+      condition: "{{ 'masakari_monitor' in group_names }}"
   notify:
     - Restart masakari services
+
+- name: Deploy masakari-monitors sudoers files
+  template:
+    src: "masakari_sudoers.j2"
+    dest: "/etc/sudoers.d/masakari_sudoers"
+    owner: "root"
+    group: "root"
+    mode: "0440"
+    validate: '/usr/sbin/visudo -cf %s'
+  when: "'masakari_monitor' in group_names"

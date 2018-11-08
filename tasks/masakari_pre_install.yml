@@ -38,11 +38,22 @@
     owner: "{{ item.owner|default(masakari_system_user_name) }}"
     group: "{{ item.group|default(masakari_system_group_name) }}"
     mode: "{{ item.mode|default(omit) }}"
+  when: item.condition | default(True)
   with_items:
-    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
-    - { path: "{{ masakari_etc_dir }}", mode: "0750" }
-    - { path: "{{ masakari_log_dir }}", mode: "0755" }
-    - { path: "{{ masakari_system_user_home }}" }
-    - { path: "{{ masakari_system_user_home }}/cache/api", mode: "0700" }
-    - { path: "{{ masakari_system_user_home }}/cache/registry" }
-    - { path: "{{ masakari_system_user_home }}/scrubber" }
+    - path: "/openstack"
+      mode: "0755"
+      owner: "root"
+      group: "root"
+    - path: "{{ masakari_etc_dir }}"
+      mode: "0750"
+      condition: "{{ masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names }}"
+    - path: "{{ masakari_monitor_etc_dir }}"
+      mode: "0750"
+      condition: "{{ inventory_hostname in groups['masakari_monitor'] }}"
+    - path: "{{ masakari_log_dir }}"
+      mode: "0755"
+    - path: "{{ masakari_system_user_home }}"
+    - path: "{{ masakari_system_user_home }}/cache/api"
+      mode: "0700"
+    - path: "{{ masakari_system_user_home }}/cache/registry"
+    - path: "{{ masakari_system_user_home }}/scrubber"

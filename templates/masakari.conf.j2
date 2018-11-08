@@ -6,34 +6,20 @@ masakari_api_listen = 0.0.0.0
 # Enable to specify port other than default
 masakari_api_listen_port = 15868
 debug = False
-auth_strategy=keystone
 log_dir = {{ masakari_log_dir }}
-wait_period_after_service_update = 180
-masakari_topic = ha_engine
-engine_manager = masakari.engine.manager.MasakariManager
-host_failure_recovery_threads = 3
-wait_period_after_power_off = 60
-wait_period_after_evacuation = 90
-verify_interval = 1
-wait_period_after_power_off = 60
-verify_interval = 1
+auth_strategy = keystone
 notification_driver = taskflow_driver
-process_unfinished_notifications_interval = 120
-retry_notification_new_status_interval = 60
-duplicate_notification_detection_interval = 180
-osapi_max_limit = 1000
-retry_notification_new_status_interval = 60
-duplicate_notification_detection_interval = 180
-osapi_max_limit = 1000
-fatal_exception_format_errors = false
-nova_catalog_admin_info = compute:Compute Service:publicURL
-nova_api_insecure = false
-report_interval = 10
-periodic_enable = true
-periodic_interval_max = 300
-periodic_fuzzy_delay = 60
-use_ssl = false
+# Nova endpoint
+nova_catalog_admin_info = compute:nova:adminURL
+nova_api_insecure = "{{ keystone_service_adminuri_insecure | default("false") }}"
+# Priveleged credentials to interact with nova
+os_privileged_user_tenant = {{ masakari_service_project_name }}
+os_privileged_user_auth_url = {{ keystone_service_adminuri }}
+os_privileged_user_name = {{ masakari_service_user_name }}
+os_privileged_user_password = {{ masakari_service_password }}
 service_down_time = 60
+periodic_enable = true
+use_ssl = false
 
 [wsgi]
 # The paste configuration file path
@@ -48,10 +34,13 @@ user_domain_id = {{ masakari_service_project_domain_id }}
 project_name = {{ masakari_service_project_name }}
 username = {{ masakari_service_user_name }}
 password = {{ masakari_service_password }}
+memcached_servers = {{ memcached_servers }}
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ memcached_encryption_key }}
+service_token_roles_required = True
 
 [database]
 connection = mysql+pymysql://{{ masakari_galera_user }}:{{ masakari_container_mysql_password }}@{{ masakari_galera_address }}/{{ masakari_galera_database }}?charset=utf8{% if masakari_galera_use_ssl | bool %}&ssl_ca={{ masakari_galera_ssl_ca_cert }}{% endif %}
-
 
 [host_failure]
 evacuate_all_instances = true

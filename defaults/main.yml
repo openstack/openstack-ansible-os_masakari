@@ -82,11 +82,19 @@ masakari_pip_packages:
   - uwsgi
   - keystoneauth1
 
+masakari_monitor_pip_packages:
+  - masakari-monitors
+  - systemd-python
+
 ## Tunable overrides
 masakari_api_paste_ini_overrides: {}
 masakari_masakari_conf_overrides: {}
 masakari_policy_json_overrides: {}
 masakari_api_init_overrides: {}
+masakari_engine_init_overrides: {}
+masakari_monitors_conf_overrides: {}
+masakari_monitors_process_overrides: {}
+masakari_monitors_init_overrides: {}
 
 ## Service Type and Data
 masakari_service_region: RegionOne
@@ -120,6 +128,7 @@ masakari_api_service_port: 15868
 masakari_enable_v1_api: True
 
 masakari_etc_dir: /etc/masakari
+masakari_monitor_etc_dir: /etc/masakarimonitors
 masakari_log_dir: /var/log/masakari
 masakari_config_options: --config-file {{ masakari_etc_dir }}/masakari.conf
 
@@ -128,9 +137,28 @@ masakari_services:
   masakari-api:
     group: masakari_api
     service_name: masakari-api
+    execstarts: "{{ masakari_bin }}/masakari-api"
+    config_overrides: "{{ masakari_api_init_overrides }}"
   masakari-engine:
     group: masakari_engine
     service_name: masakari-engine
+    execstarts: "{{ masakari_bin }}/masakari-engine"
+    config_overrides: "{{ masakari_engine_init_overrides }}"
+  masakari-hostmonitor:
+    group: masakari_monitor
+    service_name: masakari-hostmonitor
+    execstarts: "{{ masakari_bin }}/masakari-hostmonitor"
+    config_overrides: "{{ masakari_monitors_init_overrides }}"
+  masakari-instancemonitor:
+    group: masakari_monitor
+    service_name: masakari-instancemonitor
+    execstarts: "{{ masakari_bin }}/masakari-instancemonitor"
+    config_overrides: "{{ masakari_monitors_init_overrides }}"
+  masakari-processmonitor:
+    group: masakari_monitor
+    service_name: masakari-processmonitor
+    execstarts: "{{ masakari_bin }}/masakari-processmonitor"
+    config_overrides: "{{ masakari_monitors_init_overrides }}"
 
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the
@@ -167,3 +195,6 @@ masakari_oslomsg_amqp1_enabled: "{{ masakari_oslomsg_rpc_transport == 'amqp' }}"
 
 masakari_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
+
+# The multicase interface for corocync to use for masakari hostmonitor
+masakari_monitor_corosync_multicast_interface: "br-mgmt"
