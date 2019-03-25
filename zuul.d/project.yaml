@@ -19,4 +19,15 @@
       - openstack-ansible-role-jobs
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
-
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_masakari-centos-7
+        - openstack-ansible-deploy-aio_metal_masakari-opensuse-150:
+            voting: false
+        - openstack-ansible-deploy-aio_metal_masakari-ubuntu-bionic
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_masakari-centos-7
+        - openstack-ansible-deploy-aio_metal_masakari-opensuse-150:
+            voting: false
+        - openstack-ansible-deploy-aio_metal_masakari-ubuntu-bionic
