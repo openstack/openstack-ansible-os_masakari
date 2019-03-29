@@ -1,5 +1,5 @@
 ---
-- name: Install masakari server
+- name: Install masakari
   hosts: masakari_all
   user: root
   roles:
@@ -7,5 +7,5 @@
   vars:
     external_lb_vip_address: 10.232.48.205
     internal_lb_vip_address: 172.29.236.100
-    glance_galera_address: "{{ internal_lb_vip_address }}"
+    masakari_galera_address: "{{ internal_lb_vip_address }}"
 

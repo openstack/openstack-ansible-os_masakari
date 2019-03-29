@@ -184,5 +184,5 @@ masakari_oslomsg_amqp1_enabled: "{{ masakari_oslomsg_rpc_transport == 'amqp' }}"
 masakari_optional_oslomsg_amqp1_pip_packages:
   - oslo.messaging[amqp1]
 
-# The multicase interface for corocync to use for masakari hostmonitor
+# The multicast interface used by corocync for masakari hostmonitor
 masakari_monitor_corosync_multicast_interface: "br-mgmt"
