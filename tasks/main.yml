@@ -55,7 +55,6 @@
 - name: Run the systemd service role
   import_role:
     name: systemd_service
-    private: true
   vars:
     systemd_user_name: "{{ masakari_system_user_name }}"
     systemd_group_name: "{{ masakari_system_group_name }}"
