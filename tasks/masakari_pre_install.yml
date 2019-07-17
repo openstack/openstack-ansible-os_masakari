@@ -50,8 +50,6 @@
     - path: "{{ masakari_monitor_etc_dir }}"
       mode: "0750"
       condition: "{{ inventory_hostname in groups['masakari_monitor'] }}"
-    - path: "{{ masakari_log_dir }}"
-      mode: "0755"
     - path: "{{ masakari_system_user_home }}"
     - path: "{{ masakari_system_user_home }}/cache/api"
       mode: "0700"

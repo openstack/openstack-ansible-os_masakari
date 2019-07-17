@@ -67,6 +67,7 @@ masakari_pip_packages:
   - python-keystoneclient
   - python-memcached
   - python-swiftclient
+  - systemd-python
   - uwsgi
   - keystoneauth1
 
@@ -117,7 +118,6 @@ masakari_enable_v1_api: True
 
 masakari_etc_dir: /etc/masakari
 masakari_monitor_etc_dir: /etc/masakarimonitors
-masakari_log_dir: /var/log/masakari
 masakari_config_options: --config-file {{ masakari_etc_dir }}/masakari.conf
 
 ## Services
