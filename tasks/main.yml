@@ -118,7 +118,32 @@
     - "masakari_services['masakari-api']['group'] in group_names"
     - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
 
-- import_tasks: masakari_service_setup.yml
+- import_tasks: service_setup.yml
+  vars:
+    _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
+    _service_in_ldap: "{{ masakari_service_in_ldap }}"
+    _service_setup_host: "{{ masakari_service_setup_host }}"
+    _service_setup_host_python_interpreter: "{{ masakari_service_setup_host_python_interpreter }}"
+    _service_project_name: "{{ masakari_service_project_name }}"
+    _service_region: "{{ masakari_service_region }}"
+    _service_users:
+      - name: "{{ masakari_service_user_name }}"
+        password: "{{ masakari_service_password }}"
+        role: "{{ masakari_role_name }}"
+    _service_endpoints:
+      - service: "{{ masakari_service_name }}"
+        interface: "public"
+        url: "{{ masakari_service_publicurl }}"
+      - service: "{{ masakari_service_name }}"
+        interface: "internal"
+        url: "{{ masakari_service_internalurl }}"
+      - service: "{{ masakari_service_name }}"
+        interface: "admin"
+        url: "{{ masakari_service_adminurl }}"
+    _service_catalog:
+      - name: "{{ masakari_service_name }}"
+        type: "{{ masakari_service_type }}"
+        description: "{{ masakari_service_description }}"
   when:
     - "masakari_services['masakari-api']['group'] in group_names"
     - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | list)[0]"
