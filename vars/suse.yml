@@ -21,6 +21,7 @@ masakari_distro_packages:
   - which
 
 masakari_devel_distro_packages:
+  - libvirt-devel
   - libxml2-devel
   - systemd-devel
 
