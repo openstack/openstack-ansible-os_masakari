@@ -31,4 +31,4 @@
         - openstack-ansible-deploy-aio_metal_masakari-ubuntu-bionic
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_metal_masakari-opensuse-150
+        - openstack-ansible-deploy-aio_metal_masakari-opensuse-15
