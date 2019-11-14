@@ -27,9 +27,9 @@ masakari_service_setup_host_python_interpreter: "{{ openstack_service_setup_host
 masakari_package_state: "latest"
 masakari_pip_package_state: "latest"
 
-masakari_git_repo: https://git.openstack.org/openstack/masakari
+masakari_git_repo: https://opendev.org/openstack/masakari
 masakari_git_install_branch: master
-masakari_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
+masakari_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 masakari_git_constraints:
   - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
   - "--constraint {{ masakari_upper_constraints_url }}"
