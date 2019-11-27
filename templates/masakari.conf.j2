@@ -12,7 +12,7 @@ notification_driver = taskflow_driver
 # Nova endpoint
 nova_catalog_admin_info = compute:nova:adminURL
 nova_api_insecure = "{{ keystone_service_adminuri_insecure | default("false") }}"
-# Priveleged credentials to interact with nova
+# Privileged credentials to interact with nova
 os_privileged_user_tenant = {{ masakari_service_project_name }}
 os_privileged_user_auth_url = {{ keystone_service_adminuri }}
 os_privileged_user_name = {{ masakari_service_user_name }}
