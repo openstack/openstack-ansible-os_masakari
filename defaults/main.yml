@@ -74,6 +74,7 @@ masakari_pip_packages:
 masakari_monitor_pip_packages:
   - masakari-monitors
   - systemd-python
+  - "{{ (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version|int <= 7) | ternary('libvirt-python', '') }}"
 
 ## Tunable overrides
 masakari_api_paste_ini_overrides: {}
