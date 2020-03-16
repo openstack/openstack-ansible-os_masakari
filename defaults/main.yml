@@ -62,6 +62,7 @@ masakari_pip_packages:
   - keystonemiddleware
   - osprofiler
   - PyMySQL
+  - pymemcache
   - python-masakariclient
   - python-novaclient
   - python-keystoneclient
@@ -70,6 +71,9 @@ masakari_pip_packages:
   - systemd-python
   - uwsgi
   - keystoneauth1
+
+# Memcached override
+masakari_memcached_servers: "{{ memcached_servers }}"
 
 masakari_monitor_pip_packages:
   - masakari-monitors
