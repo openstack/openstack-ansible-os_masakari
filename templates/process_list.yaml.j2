@@ -21,16 +21,6 @@
     post_restart_command:
     run_as_root: True
 -
-    # nova-compute
-    process_name: {{ (ansible_local.openstack_ansible.nova.install_method == "source") | ternary("/openstack/venvs/nova-{{ nova_venv_tag }}/bin/nova-compute", "/usr/bin/nova-compute") }}
-    start_command: systemctl start nova-compute
-    pre_start_command:
-    post_start_command:
-    restart_command: systemctl restart nova-compute
-    pre_restart_command:
-    post_restart_command:
-    run_as_root: True
--
     # instancemonitor
     process_name: {{ masakari_bin }}/masakari-instancemonitor
     start_command: systemctl start masakari-instancemonitor
