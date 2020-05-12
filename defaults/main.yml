@@ -154,12 +154,6 @@ masakari_services:
     execstarts: "{{ masakari_bin }}/masakari-processmonitor"
     config_overrides: "{{ masakari_monitors_init_overrides }}"
 
-# This variable is used by the repo_build process to determine
-# which host group to check for members of before building the
-# pip packages required by this role. The value is picked up
-# by the py_pkgs lookup.
-masakari_role_project_group: masakari_all
-
 ## Configuration for Oslo Messaging
 
 # RPC
