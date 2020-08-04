@@ -29,10 +29,13 @@ masakari_package_state: "latest"
 masakari_pip_package_state: "latest"
 
 masakari_git_repo: https://opendev.org/openstack/masakari
+masakari_monitors_git_repo: https://opendev.org/openstack/masakari-monitors
 masakari_git_install_branch: master
+masakari_monitors_git_install_branch: master
 masakari_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 masakari_git_constraints:
   - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
+  - "git+{{ masakari_monitors_git_repo }}@{{ masakari_monitors_git_install_branch }}#egg=masakari-monitors"
   - "--constraint {{ masakari_upper_constraints_url }}"
 
 ## System info
