@@ -31,6 +31,9 @@
     - "inventory_hostname == ((groups[masakari_services['masakari-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
   vars:
     _oslodb_setup_host: "{{ masakari_db_setup_host }}"
+    _oslodb_ansible_python_interpreter: "{{ masakari_db_setup_python_interpreter }}"
+    _oslodb_setup_endpoint: "{{ masakari_galera_address }}"
+    _oslodb_setup_port: "{{ masakari_galera_port }}"
     _oslodb_databases:
       - name: "{{ masakari_galera_database }}"
         users:
