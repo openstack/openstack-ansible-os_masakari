@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+_masakari_is_first_play_host: "{{ (masakari_services['masakari-api']['group'] in group_names and inventory_hostname == (groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | first) | bool }}"
+
 masakari_pip_venv_packages: |-
   {% set pip_packages = [] %}
   {% if masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names %}
