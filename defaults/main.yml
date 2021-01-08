@@ -23,10 +23,9 @@ masakari_service_setup_host: "{{ openstack_service_setup_host | default('localho
 masakari_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((masakari_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
 masakari_venv_python_executable: "{{ openstack_venv_python_executable | default('python2') }}"
 
-# Set the package install state for distribution and pip packages
+# Set the package install state for distribution packages
 # Options are 'present' and 'latest'
-masakari_package_state: "latest"
-masakari_pip_package_state: "latest"
+masakari_package_state: "{{ package_state | default('latest') }}"
 
 masakari_git_repo: https://opendev.org/openstack/masakari
 masakari_monitors_git_repo: https://opendev.org/openstack/masakari-monitors
@@ -53,7 +52,7 @@ masakari_galera_database: masakari
 masakari_galera_user: masakari
 masakari_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
 masakari_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/galera-ca.pem') }}"
-masakari_galera_port: 3306
+masakari_galera_port: "{{ galera_port | default('3306') }}"
 
 masakari_pip_install_args: "{{ pip_install_options | default('') }}"
 
@@ -97,7 +96,7 @@ masakari_monitors_process_overrides: {}
 masakari_monitors_init_overrides: {}
 
 ## Service Type and Data
-masakari_service_region: RegionOne
+masakari_service_region: "{{ service_region | default('RegionOne') }}"
 masakari_service_name: masakari
 masakari_service_port: 15868
 masakari_service_proto: http
@@ -118,7 +117,7 @@ masakari_service_internalurl: "{{ masakari_service_internaluri }}/v1/%(tenant_id
 masakari_service_adminuri: "{{ masakari_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ masakari_service_port }}"
 masakari_service_adminurl: "{{ masakari_service_adminuri }}/v1/%(tenant_id)s"
 
-masakari_service_in_ldap: false
+masakari_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
 
 masakari_role_name: admin
 masakari_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
