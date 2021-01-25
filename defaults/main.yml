@@ -33,8 +33,6 @@ masakari_git_install_branch: master
 masakari_monitors_git_install_branch: master
 masakari_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 masakari_git_constraints:
-  - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
-  - "git+{{ masakari_monitors_git_repo }}@{{ masakari_monitors_git_install_branch }}#egg=masakari-monitors"
   - "--constraint {{ masakari_upper_constraints_url }}"
 
 ## System info
@@ -63,6 +61,7 @@ masakari_bin: "/openstack/venvs/masakari-{{ masakari_venv_tag }}/bin"
 # Common pip packages
 masakari_pip_packages:
   - cryptography
+  - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
   - masakari
   - keystonemiddleware
   - osprofiler
@@ -81,7 +80,7 @@ masakari_pip_packages:
 masakari_memcached_servers: "{{ memcached_servers }}"
 
 masakari_monitor_pip_packages:
-  - masakari-monitors
+  - "git+{{ masakari_monitors_git_repo }}@{{ masakari_monitors_git_install_branch }}#egg=masakari-monitors"
   - systemd-python
   - "{{ (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version|int <= 7) | ternary('libvirt-python', '') }}"
 
