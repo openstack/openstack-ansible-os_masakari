@@ -82,7 +82,6 @@ masakari_memcached_servers: "{{ memcached_servers }}"
 masakari_monitor_pip_packages:
   - "git+{{ masakari_monitors_git_repo }}@{{ masakari_monitors_git_install_branch }}#egg=masakari-monitors"
   - systemd-python
-  - "{{ (ansible_os_family | lower == 'redhat' and ansible_distribution_major_version|int <= 7) | ternary('libvirt-python', '') }}"
 
 ## Tunable overrides
 masakari_api_paste_ini_overrides: {}
