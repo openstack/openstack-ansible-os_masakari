@@ -21,7 +21,7 @@ debug: False
 # clouds.yaml properly configured.
 masakari_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
 masakari_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((masakari_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
-masakari_venv_python_executable: "{{ openstack_venv_python_executable | default('python2') }}"
+masakari_venv_python_executable: "{{ openstack_venv_python_executable | default('python3') }}"
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
