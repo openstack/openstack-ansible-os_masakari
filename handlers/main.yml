@@ -23,6 +23,15 @@
   listen:
     - "venv changed"
 
+# NOTE (noonedeadpunk): Remove this task after Xena release
+- name: Remove obsoleted policy.json
+  file:
+    path: "{{ masakari_etc_dir }}/policy.json"
+    state: absent
+  listen:
+    - "Restart masakari services"
+    - "venv changed"
+
 - meta: noop
   listen: Manage LB
   when: false
