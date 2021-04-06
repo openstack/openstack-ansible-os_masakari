@@ -34,11 +34,6 @@
       config_overrides: "{{ masakari_masakari_conf_overrides }}"
       config_type: "ini"
       condition: "{{ masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names }}"
-    - src: "policy.json.j2"
-      dest: "{{ masakari_etc_dir }}/policy.json"
-      config_overrides: "{{ masakari_policy_json_overrides }}"
-      config_type: "json"
-      condition: "{{ masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names }}"
     - src: "masakarimonitors.conf.j2"
       dest: "{{ masakari_monitor_etc_dir }}/masakarimonitors.conf"
       config_overrides: "{{ masakari_monitors_conf_overrides }}"
@@ -51,6 +46,30 @@
       condition: "{{ 'masakari_monitor' in group_names }}"
   notify:
     - Restart masakari services
+
+- name: Implement policy.yaml
+  config_template:
+    content: "{{ masakari_policy_overrides }}"
+    dest: "{{ masakari_etc_dir }}/policy.yaml"
+    owner: "root"
+    group: "{{ masakari_system_group_name }}"
+    mode: "0640"
+    config_type: yaml
+  when:
+    - masakari_policy_overrides | length > 0
+    - masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names
+  tags:
+    - masakari-policy-override
+
+- name: Remove legacy policy.yaml file
+  file:
+    path: "{{ masakari_etc_dir }}/policy.yaml"
+    state: absent
+  when:
+    - masakari_policy_overrides | length == 0
+    - masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names
+  tags:
+    - masakari-policy-override
 
 - name: Deploy masakari-monitors sudoers files
   template:
