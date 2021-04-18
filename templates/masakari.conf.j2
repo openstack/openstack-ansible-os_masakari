@@ -2,9 +2,9 @@
 enabled_apis = masakari_api
 transport_url = {{ masakari_oslomsg_rpc_transport }}://{% for host in masakari_oslomsg_rpc_servers.split(',') %}{{ masakari_oslomsg_rpc_userid }}:{{ masakari_oslomsg_rpc_password }}@{{ host }}:{{ masakari_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ masakari_oslomsg_rpc_vhost }}{% if (masakari_oslomsg_rpc_use_ssl | lower) | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 # Enable to specify listening IP other than default
-masakari_api_listen = 0.0.0.0
+masakari_api_listen = {{ masakari_api_bind_address }}
 # Enable to specify port other than default
-masakari_api_listen_port = 15868
+masakari_api_listen_port = {{ masakari_api_service_port }}
 debug = False
 use_journal = true
 auth_strategy = keystone
