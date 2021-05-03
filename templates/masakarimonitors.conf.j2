@@ -1,5 +1,5 @@
 [DEFAULT]
-host = {{ ansible_host }}
+hostname = {{ ansible_facts['hostname'] }}
 processmonitor_manager = masakarimonitors.processmonitor.process.ProcessmonitorManager
 hostmonitor_manager = masakarimonitors.hostmonitor.host.HostmonitorManager
 use_journal = true
