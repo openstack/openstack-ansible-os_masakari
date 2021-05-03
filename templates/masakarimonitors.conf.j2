@@ -17,9 +17,9 @@ user_domain_id = {{ masakari_service_user_domain_id }}
 password = {{ masakari_service_password }}
 
 [host]
-disable_ipmi_check = True
+disable_ipmi_check = {{ masakari_monitor_corosync_ipmi_check }}
 corosync_multicast_interfaces = {{ masakari_monitor_corosync_multicast_interface }}
-corosync_multicast_ports = 5405
+corosync_multicast_ports = {{ masakari_monitor_corosync_multicast_ports }}
 
 [process]
 check_interval = 5

@@ -190,3 +190,5 @@ masakari_optional_oslomsg_amqp1_pip_packages:
 
 # The multicast interface used by corocync for masakari hostmonitor
 masakari_monitor_corosync_multicast_interface: "br-mgmt"
+masakari_monitor_corosync_multicast_ports: 5405
+masakari_monitor_corosync_ipmi_check: False
