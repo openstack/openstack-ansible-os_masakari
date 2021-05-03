@@ -152,6 +152,11 @@ masakari_services:
     service_name: masakari-instancemonitor
     execstarts: "{{ masakari_bin }}/masakari-instancemonitor"
     config_overrides: "{{ masakari_monitors_init_overrides }}"
+  masakari-introspectiveinstancemonitor:
+    group: masakari_monitor
+    service_name: masakari-introspectiveinstancemonitor
+    execstarts: "{{ masakari_bin }}/masakari-introspectiveinstancemonitor"
+    config_overrides: "{{ masakari_monitors_init_overrides }}"
   masakari-processmonitor:
     group: masakari_monitor
     service_name: masakari-processmonitor
