@@ -1,6 +1,6 @@
 [DEFAULT]
 enabled_apis = masakari_api
-transport_url = {{ masakari_oslomsg_rpc_transport }}://{% for host in masakari_oslomsg_rpc_servers.split(',') %}{{ masakari_oslomsg_rpc_userid }}:{{ masakari_oslomsg_rpc_password }}@{{ host }}:{{ masakari_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ masakari_oslomsg_rpc_vhost }}{% if (masakari_oslomsg_rpc_use_ssl | lower) | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
+transport_url = {{ masakari_oslomsg_rpc_transport }}://{% for host in masakari_oslomsg_rpc_servers.split(',') %}{{ masakari_oslomsg_rpc_userid }}:{{ masakari_oslomsg_rpc_password }}@{{ host }}:{{ masakari_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ masakari_oslomsg_rpc_vhost }}{% if masakari_oslomsg_rpc_use_ssl | bool %}?ssl=1&ssl_version={{ masakari_oslomsg_rpc_ssl_version }}&ssl_ca_file={{ masakari_oslomsg_rpc_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 # Enable to specify listening IP other than default
 masakari_api_listen = 0.0.0.0
 # Enable to specify port other than default
@@ -57,4 +57,4 @@ process_all_instances = false
 ssl = {{ masakari_oslomsg_notify_use_ssl | bool }}
 
 [oslo_messaging_notifications]
-transport_url = {{ masakari_oslomsg_notify_transport }}://{% for host in masakari_oslomsg_notify_servers.split(',') %}{{ masakari_oslomsg_notify_userid }}:{{ masakari_oslomsg_notify_password }}@{{ host }}:{{ masakari_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ masakari_oslomsg_notify_vhost }}{% if (masakari_oslomsg_notify_use_ssl | lower) | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
+transport_url = {{ masakari_oslomsg_notify_transport }}://{% for host in masakari_oslomsg_notify_servers.split(',') %}{{ masakari_oslomsg_notify_userid }}:{{ masakari_oslomsg_notify_password }}@{{ host }}:{{ masakari_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ masakari_oslomsg_notify_vhost }}{% if masakari_oslomsg_notify_use_ssl | bool %}?ssl=1&ssl_version={{ masakari_oslomsg_notify_ssl_version }}&ssl_ca_file={{ masakari_oslomsg_notify_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
