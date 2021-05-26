@@ -24,12 +24,8 @@ masakari_devel_distro_packages:
   - systemd-devel
 
 masakari_monitor_distro_packages:
-  - "{{ (ansible_distribution_major_version|int <= 7) | ternary('libvirt-devel', 'python3-libvirt') }}"
+  - python3-libvirt
   - systemd-devel
 
-masakari_monitor_packages_to_symlink: |-
-  {% set packages = [] %}
-  {% if ansible_distribution_major_version|int > 7 %}
-  {%   set _ = packages.extend(['python3-libvirt']) %}
-  {% endif %}
-  {{ packages }}
+masakari_monitor_packages_to_symlink:
+  - python3-libvirt
