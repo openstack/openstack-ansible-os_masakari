@@ -44,7 +44,7 @@ masakari_system_user_home: "/var/lib/{{ masakari_system_user_name }}"
 
 ## Database credentials
 masakari_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
-masakari_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((masakari_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+masakari_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((masakari_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 masakari_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 masakari_galera_database: masakari
 masakari_galera_user: masakari
