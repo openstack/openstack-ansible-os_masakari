@@ -25,7 +25,12 @@
   tags:
     - always
 
-- import_tasks: db_setup.yml
+- include_role:
+    name: openstack.osa.db_setup
+    apply:
+      tags:
+        - common-db
+        - masakari-config
   when:
     - "_masakari_is_first_play_host"
   vars:
@@ -39,10 +44,14 @@
           - username: "{{ masakari_galera_user }}"
             password: "{{ masakari_container_mysql_password }}"
   tags:
-    - common-db
-    - masakari-config
+    - always
 
-- import_tasks: mq_setup.yml
+- include_role:
+    name: openstack.osa.mq_setup
+    apply:
+      tags:
+        - common-mq
+        - masakari-config
   when:
     - "_masakari_is_first_play_host"
   vars:
@@ -57,8 +66,7 @@
     _oslomsg_notify_vhost: "{{ masakari_oslomsg_notify_vhost }}"
     _oslomsg_notify_transport: "{{ masakari_oslomsg_notify_transport }}"
   tags:
-    - common-mq
-    - masakari-config
+    - always
 
 - import_tasks: masakari_pre_install.yml
   tags:
@@ -119,7 +127,12 @@
   when:
     - "_masakari_is_first_play_host"
 
-- import_tasks: service_setup.yml
+- include_role:
+    name: openstack.osa.service_setup
+    apply:
+      tags:
+        - common-service
+        - masakari-config
   vars:
     _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
     _service_in_ldap: "{{ masakari_service_in_ldap }}"
@@ -148,7 +161,7 @@
   when:
     - "_masakari_is_first_play_host"
   tags:
-    - masakari-config
+    - always
 
 - name: Flush handlers
   meta: flush_handlers
