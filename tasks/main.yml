@@ -147,7 +147,7 @@
     _service_users:
       - name: "{{ masakari_service_user_name }}"
         password: "{{ masakari_service_password }}"
-        role: "{{ masakari_role_name }}"
+        role: "{{ masakari_service_role_names }}"
     _service_endpoints:
       - service: "{{ masakari_service_name }}"
         interface: "public"
