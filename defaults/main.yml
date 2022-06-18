@@ -122,7 +122,12 @@ masakari_service_adminurl: "{{ masakari_service_adminuri }}/v1/%(tenant_id)s"
 
 masakari_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
 
-masakari_role_name: admin
+masakari_service_role_names:
+  - admin
+  - service
+masakari_service_token_roles:
+  - service
+masakari_service_token_roles_required: "{{ openstack_service_token_roles_required | default(True) }}"
 masakari_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 masakari_api_service_port: 15868
 
