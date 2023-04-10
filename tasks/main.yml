@@ -117,7 +117,12 @@
       {% set services = [] %}
       {% for service in masakari_services.values() %}
       {%   if service.group in group_names %}
-      {%     set _ = service.update({'enabled': 'yes', 'state': 'started'}) %}
+      {%     set _ = service.update(
+              {
+                'enabled': service['enabled'] | default(True),
+                'state': service['state'] | default('started')
+              }
+          ) %}
       {%     set _ = service.pop('group') %}
       {%     set _ = services.append(service) %}
       {%   endif %}
