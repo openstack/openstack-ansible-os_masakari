@@ -1,8 +1,4 @@
 ---
-- name: apt_package_pinning
-  src: https://opendev.org/openstack/openstack-ansible-apt_package_pinning
-  scm: git
-  version: master
 - name: memcached_server
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
   scm: git

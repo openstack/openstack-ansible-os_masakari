@@ -36,7 +36,4 @@ galaxy_info:
     - masakari
     - development
     - openstack
-dependencies:
-  - role: apt_package_pinning
-    when:
-      - ansible_facts['pkg_mgr'] == 'apt'
+dependencies: []
