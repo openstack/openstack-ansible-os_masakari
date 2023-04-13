@@ -19,7 +19,11 @@ os_privileged_user_name = {{ masakari_service_user_name }}
 os_privileged_user_password = {{ masakari_service_password }}
 service_down_time = 60
 periodic_enable = true
-use_ssl = false
+{% if masakari_backend_ssl | bool %}
+use_ssl = True
+ssl_cert_file = {{ masakari_ssl_cert }}
+ssl_key_file = {{ masakari_ssl_key }}
+{% endif %}
 
 [wsgi]
 # The paste configuration file path

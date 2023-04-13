@@ -75,6 +75,26 @@
   tags:
     - masakari-install
 
+- name: Create and install SSL certificates
+  include_role:
+    name: pki
+    tasks_from: main_certs.yml
+    apply:
+      tags:
+        - masakari-config
+        - pki
+  vars:
+    pki_setup_host: "{{ masakari_pki_setup_host }}"
+    pki_dir: "{{ masakari_pki_dir }}"
+    pki_create_certificates: "{{ masakari_user_ssl_cert is not defined and masakari_user_ssl_key is not defined }}"
+    pki_regen_cert: "{{ masakari_pki_regen_cert }}"
+    pki_certificates: "{{ masakari_pki_certificates }}"
+    pki_install_certificates: "{{ masakari_pki_install_certificates }}"
+  when:
+    - masakari_backend_ssl
+  tags:
+    - always
+
 - name: Install the python venv
   import_role:
     name: "python_venv_build"
