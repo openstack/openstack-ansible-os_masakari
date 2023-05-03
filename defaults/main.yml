@@ -209,3 +209,51 @@ masakari_optional_oslomsg_amqp1_pip_packages:
 masakari_monitor_corosync_multicast_interface: "br-mgmt"
 masakari_monitor_corosync_multicast_ports: 5405
 masakari_monitor_corosync_ipmi_check: False
+
+###
+### Backend TLS
+###
+
+# Define if communication between haproxy and service backends should be
+# encrypted with TLS.
+masakari_backend_ssl: "{{ openstack_service_backend_ssl | default(False) }}"
+
+# Storage location for SSL certificate authority
+masakari_pki_dir: "{{ openstack_pki_dir | default('/etc/openstack_deploy/pki') }}"
+
+# Delegated host for operating the certificate authority
+masakari_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
+
+# masakari server certificate
+masakari_pki_keys_path: "{{ masakari_pki_dir ~ '/certs/private/' }}"
+masakari_pki_certs_path: "{{ masakari_pki_dir ~ '/certs/certs/' }}"
+masakari_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
+masakari_pki_regen_cert: ''
+masakari_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+masakari_pki_certificates:
+  - name: "masakari_{{ ansible_facts['hostname'] }}"
+    provider: ownca
+    cn: "{{ ansible_facts['hostname'] }}"
+    san: "{{ masakari_pki_san }}"
+    signed_by: "{{ masakari_pki_intermediate_cert_name }}"
+
+# masakari destination files for SSL certificates
+masakari_ssl_cert: /etc/masakari/masakari.pem
+masakari_ssl_key: /etc/masakari/masakari.key
+
+# Installation details for SSL certificates
+masakari_pki_install_certificates:
+  - src: "{{ masakari_user_ssl_cert | default(masakari_pki_certs_path ~ 'masakari_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+    dest: "{{ masakari_ssl_cert }}"
+    owner: "{{ masakari_system_user_name }}"
+    group: "{{ masakari_system_user_name }}"
+    mode: "0644"
+  - src: "{{ masakari_user_ssl_key | default(masakari_pki_keys_path ~ 'masakari_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    dest: "{{ masakari_ssl_key }}"
+    owner: "{{ masakari_system_user_name }}"
+    group: "{{ masakari_system_user_name }}"
+    mode: "0600"
+
+# Define user-provided SSL certificates
+#masakari_user_ssl_cert: <path to cert on ansible deployment host>
+#masakari_user_ssl_key: <path to cert on ansible deployment host>
