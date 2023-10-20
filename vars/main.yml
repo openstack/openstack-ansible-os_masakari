@@ -18,6 +18,17 @@ _masakari_is_first_play_host: >-
     (masakari_services['masakari-api']['group'] in group_names and
       inventory_hostname == (groups[masakari_services['masakari-api']['group']] | intersect(ansible_play_hosts)) | first) | bool
   }}
+_masakari_oslomsg_rpc_vhost_conf: >-
+  {{
+    (masakari_oslomsg_rpc_vhost is string) | ternary(
+      masakari_oslomsg_rpc_vhost, masakari_oslomsg_rpc_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first)
+  }}
+_masakari_oslomsg_notify_vhost_conf: >-
+  {{
+    (masakari_oslomsg_notify_vhost is string) | ternary(
+      masakari_oslomsg_notify_vhost, masakari_oslomsg_notify_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first)
+  }}
+
 
 masakari_pip_venv_packages: |-
   {% set pip_packages = [] %}
