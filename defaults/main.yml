@@ -75,8 +75,8 @@ masakari_bin: "/openstack/venvs/masakari-{{ masakari_venv_tag }}/bin"
 masakari_pip_packages:
   - cryptography
   - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
-  - masakari
   - keystonemiddleware
+  - sqlalchemy-migrate
   - osprofiler
   - PyMySQL
   - pymemcache
