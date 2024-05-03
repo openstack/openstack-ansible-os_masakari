@@ -202,6 +202,7 @@ masakari_oslomsg_rpc_ssl_version: "{{ oslomsg_rpc_ssl_version | default('TLSv1_2
 masakari_oslomsg_rpc_ssl_ca_file: "{{ oslomsg_rpc_ssl_ca_file | default('') }}"
 
 # Notify
+masakari_oslomsg_notify_configure: "{{ oslomsg_notify_configure | default(False) }}"
 masakari_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group | default('rabbitmq_all') }}"
 masakari_oslomsg_notify_setup_host: >-
   {{ (masakari_oslomsg_notify_host_group in groups) | ternary(groups[masakari_oslomsg_notify_host_group][0], 'localhost') }}

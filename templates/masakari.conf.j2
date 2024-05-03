@@ -72,4 +72,5 @@ rabbit_quorum_delivery_limit = {{ masakari_oslomsg_rabbit_quorum_delivery_limit 
 rabbit_quorum_max_memory_bytes = {{ masakari_oslomsg_rabbit_quorum_max_memory_bytes }}
 
 [oslo_messaging_notifications]
+driver = {{ (masakari_oslomsg_notify_configure | bool) | ternary('messagingv2', 'noop') }}
 transport_url = {{ masakari_oslomsg_notify_transport }}://{% for host in masakari_oslomsg_notify_servers.split(',') %}{{ masakari_oslomsg_notify_userid }}:{{ masakari_oslomsg_notify_password }}@{{ host }}:{{ masakari_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ _masakari_oslomsg_notify_vhost_conf }}{% if masakari_oslomsg_notify_use_ssl | bool %}?ssl=1&ssl_version={{ masakari_oslomsg_notify_ssl_version }}&ssl_ca_file={{ masakari_oslomsg_notify_ssl_ca_file }}{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}

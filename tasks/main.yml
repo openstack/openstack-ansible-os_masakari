@@ -72,6 +72,7 @@
     _oslomsg_notify_vhost: "{{ masakari_oslomsg_notify_vhost }}"
     _oslomsg_notify_transport: "{{ masakari_oslomsg_notify_transport }}"
     _oslomsg_notify_policies: "{{ masakari_oslomsg_notify_policies }}"
+    _oslomsg_notify_configure: "{{ masakari_oslomsg_notify_configure }}"
   tags:
     - always
 
