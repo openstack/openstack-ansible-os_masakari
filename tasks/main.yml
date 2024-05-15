@@ -122,6 +122,7 @@
   import_tasks: masakari_post_install.yml
   tags:
     - masakari-config
+    - post-install
 
 - name: Run the systemd service role
   import_role:
