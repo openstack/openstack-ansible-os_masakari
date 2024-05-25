@@ -20,3 +20,20 @@
       - openstack-ansible-deploy-aio_metal-jobs
       - publish-openstack-docs-pti
       - build-release-notes-jobs-python3
+    # NOTE(noonedeadpunk): Upgrade jobs are marked as non-voting due to borked
+    #                      masakari db upgrade script. Drop once patch lands:
+    #                      https://review.opendev.org/c/openstack/masakari/+/920034
+    check:
+      jobs:
+        - openstack-ansible-upgrade-aio_metal-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade_2023.1-aio_metal-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy:
+            voting: false
+        - openstack-ansible-upgrade_2023.1-aio_metal-ubuntu-jammy:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal_tls-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal_tls-ubuntu-jammy:
+            voting: false
