@@ -116,7 +116,7 @@ masakari_service_registry_proto: "{{ masakari_service_proto }}"
 masakari_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(masakari_service_proto) }}"
 masakari_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(masakari_service_proto) }}"
 masakari_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(masakari_service_proto) }}"
-masakari_service_type: ha
+masakari_service_type: instance-ha
 masakari_service_description: "Masakari ha Service"
 masakari_service_user_name: masakari
 masakari_service_project_name: service
