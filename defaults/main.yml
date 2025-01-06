@@ -226,13 +226,6 @@ masakari_oslomsg_rabbit_queue_manager: "{{ oslomsg_rabbit_queue_manager | defaul
 masakari_oslomsg_rabbit_quorum_delivery_limit: "{{ oslomsg_rabbit_quorum_delivery_limit | default(0) }}"
 masakari_oslomsg_rabbit_quorum_max_memory_bytes: "{{ oslomsg_rabbit_quorum_max_memory_bytes | default(0) }}"
 
-## (Qdrouterd) integration
-# TODO(ansmith): Change structure when more backends will be supported
-masakari_oslomsg_amqp1_enabled: "{{ masakari_oslomsg_rpc_transport == 'amqp' }}"
-
-masakari_optional_oslomsg_amqp1_pip_packages:
-  - oslo.messaging[amqp1]
-
 # The multicast interface used by corocync for masakari hostmonitor
 masakari_monitor_corosync_multicast_interface: "br-mgmt"
 masakari_monitor_corosync_multicast_ports: 5405

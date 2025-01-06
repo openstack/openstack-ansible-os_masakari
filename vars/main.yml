@@ -38,7 +38,4 @@ masakari_pip_venv_packages: |-
   {% if 'masakari_monitor' in group_names %}
   {%   set _ = pip_packages.extend(masakari_monitor_pip_packages) %}
   {% endif %}
-  {% if masakari_oslomsg_amqp1_enabled | bool %}
-  {%   set _ = pip_packages.extend(masakari_optional_oslomsg_amqp1_pip_packages) %}
-  {% endif %}
   {{ pip_packages }}
