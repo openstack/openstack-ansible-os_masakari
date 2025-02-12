@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Gather variables for each operating system
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -29,7 +29,7 @@
     - always
 
 - name: Including osa.db_setup role
-  include_role:
+  ansible.builtin.include_role:
     name: openstack.osa.db_setup
     apply:
       tags:
@@ -51,7 +51,7 @@
     - always
 
 - name: Including osa.mq_setup role
-  include_role:
+  ansible.builtin.include_role:
     name: openstack.osa.mq_setup
     apply:
       tags:
@@ -77,12 +77,12 @@
     - always
 
 - name: Importing masakari_pre_install tasks
-  import_tasks: masakari_pre_install.yml
+  ansible.builtin.import_tasks: masakari_pre_install.yml
   tags:
     - masakari-install
 
 - name: Create and install SSL certificates
-  include_role:
+  ansible.builtin.include_role:
     name: pki
     tasks_from: main_certs.yml
     apply:
@@ -102,7 +102,7 @@
     - always
 
 - name: Install the python venv
-  import_role:
+  ansible.builtin.import_role:
     name: "python_venv_build"
   vars:
     venv_python_executable: "{{ masakari_venv_python_executable }}"
@@ -122,13 +122,13 @@
     - masakari-install
 
 - name: Importing masakari_post_install tasks
-  import_tasks: masakari_post_install.yml
+  ansible.builtin.import_tasks: masakari_post_install.yml
   tags:
     - masakari-config
     - post-install
 
 - name: Run the systemd service role
-  import_role:
+  ansible.builtin.import_role:
     name: systemd_service
   vars:
     systemd_user_name: "{{ masakari_system_user_name }}"
@@ -160,12 +160,12 @@
     - systemd-service
 
 - name: Importing masakari_db_sync tasks
-  import_tasks: masakari_db_sync.yml
+  ansible.builtin.import_tasks: masakari_db_sync.yml
   when:
     - "_masakari_is_first_play_host"
 
 - name: Including osa.service_setup role
-  include_role:
+  ansible.builtin.include_role:
     name: openstack.osa.service_setup
     apply:
       tags:
@@ -206,4 +206,4 @@
     - always
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers

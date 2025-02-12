@@ -62,7 +62,7 @@
     - masakari-policy-override
 
 - name: Remove legacy policy.yaml file
-  file:
+  ansible.builtin.file:
     path: "{{ masakari_etc_dir }}/policy.yaml"
     state: absent
   when:
@@ -72,7 +72,7 @@
     - masakari-policy-override
 
 - name: Deploy masakari-monitors sudoers files
-  template:
+  ansible.builtin.template:
     src: "masakari_sudoers.j2"
     dest: "/etc/sudoers.d/masakari_sudoers"
     owner: "root"

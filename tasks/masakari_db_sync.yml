@@ -14,7 +14,7 @@
 # limitations under the License
 
 - name: Perform a synchronization of the Masakari database
-  command: "{{ masakari_bin }}/masakari-manage db sync"
+  ansible.builtin.command: "{{ masakari_bin }}/masakari-manage db sync"
   become: true
   become_user: "{{ masakari_system_user_name }}"
   changed_when: false
