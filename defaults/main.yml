@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## Verbosity Options
-debug: False
+debug: false
 
 # Set the host which will execute the shade modules
 # for the service setup. The host must already have
@@ -141,7 +141,7 @@ masakari_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0
 masakari_api_service_port: 15868
 
 ## API options
-masakari_enable_v1_api: True
+masakari_enable_v1_api: true
 
 masakari_etc_dir: /etc/masakari
 masakari_monitor_etc_dir: /etc/masakarimonitors
@@ -229,7 +229,7 @@ masakari_oslomsg_rabbit_quorum_max_memory_bytes: "{{ oslomsg_rabbit_quorum_max_m
 # The multicast interface used by corocync for masakari hostmonitor
 masakari_monitor_corosync_multicast_interface: "br-mgmt"
 masakari_monitor_corosync_multicast_ports: 5405
-masakari_monitor_corosync_ipmi_check: False
+masakari_monitor_corosync_ipmi_check: false
 
 ###
 ### Backend TLS
@@ -249,7 +249,7 @@ masakari_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
 masakari_pki_keys_path: "{{ masakari_pki_dir ~ '/certs/private/' }}"
 masakari_pki_certs_path: "{{ masakari_pki_dir ~ '/certs/certs/' }}"
 masakari_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
-masakari_pki_regen_cert: ''
+masakari_pki_regen_cert: ""
 masakari_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
 masakari_pki_certificates:
   - name: "masakari_{{ ansible_facts['hostname'] }}"

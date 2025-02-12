@@ -17,7 +17,7 @@
   service:
     name: "{{ item.value.service_name }}"
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
   with_dict: "{{ masakari_services }}"
   when: inventory_hostname in groups[item.value.group]
   listen:
