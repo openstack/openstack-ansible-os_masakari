@@ -196,10 +196,6 @@
       - name: "{{ masakari_service_name }}"
         type: "{{ masakari_service_type }}"
         description: "{{ masakari_service_description }}"
-      # TODO(noonedeadpunk): Remove after Epoxy release
-      - name: "{{ masakari_service_name }}"
-        type: "ha"
-        state: absent
   when:
     - "_masakari_is_first_play_host"
   tags:
