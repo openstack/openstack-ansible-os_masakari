@@ -40,6 +40,9 @@ masakari_upper_constraints_url: >-
 masakari_git_constraints:
   - "--constraint {{ masakari_upper_constraints_url }}"
 
+## Libvirt Group
+masakari_monitor_libvirt_group: "{{ libvirt_group | default('libvirt') }}"
+
 ## System info
 masakari_system_user_name: masakari
 masakari_system_group_name: masakari
