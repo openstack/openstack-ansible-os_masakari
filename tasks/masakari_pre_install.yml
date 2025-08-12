@@ -31,6 +31,14 @@
     createhome: "yes"
     home: "{{ masakari_system_user_home }}"
 
+- name: Add masakari user to libvirt Group
+  ansible.builtin.user:
+    name: "{{ masakari_system_user_name }}"
+    groups: "{{ masakari_monitor_libvirt_group }}"
+    append: "yes"
+  when:
+    - "masakari_services['masakari-hostmonitor']['group'] in group_names"
+
 - name: Create masakari dir
   ansible.builtin.file:
     path: "{{ item.path | realpath }}"
