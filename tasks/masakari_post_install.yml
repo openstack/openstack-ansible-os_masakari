@@ -56,17 +56,6 @@
     mode: "0640"
     config_type: yaml
   when:
-    - masakari_policy_overrides | length > 0
-    - masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names
-  tags:
-    - masakari-policy-override
-
-- name: Remove legacy policy.yaml file
-  ansible.builtin.file:
-    path: "{{ masakari_etc_dir }}/policy.yaml"
-    state: absent
-  when:
-    - masakari_policy_overrides | length == 0
     - masakari_services['masakari-api']['group'] in group_names or masakari_services['masakari-engine']['group'] in group_names
   tags:
     - masakari-policy-override
