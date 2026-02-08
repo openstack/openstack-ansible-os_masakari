@@ -31,7 +31,7 @@ api_paste_config = {{ masakari_etc_dir }}/api-paste.ini
 
 [keystone_authtoken]
 auth_url = {{ keystone_service_adminuri }}
-www_authenticate_uri = {{ keystone_service_internaluri }}
+www_authenticate_uri = {{ keystone_service_publicuri }}
 auth_type = password
 project_domain_id = {{ masakari_service_user_domain_id }}
 user_domain_id = {{ masakari_service_project_domain_id }}
