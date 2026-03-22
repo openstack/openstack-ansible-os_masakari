@@ -253,12 +253,14 @@ masakari_pki_keys_path: "{{ masakari_pki_dir ~ '/certs/private/' }}"
 masakari_pki_certs_path: "{{ masakari_pki_dir ~ '/certs/certs/' }}"
 masakari_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
 masakari_pki_regen_cert: ""
-masakari_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+masakari_pki_san: "{{ openstack_pki_san | default({'dns': [ansible_facts['hostname']], 'ip': [management_address]}) }}"
+masakari_pki_backend: "{{ openstack_pki_backend | default('standalone') }}"
 masakari_pki_certificates:
   - name: "masakari_{{ ansible_facts['hostname'] }}"
-    provider: ownca
     cn: "{{ ansible_facts['hostname'] }}"
     san: "{{ masakari_pki_san }}"
+    # standalone backend only
+    provider: ownca
     signed_by: "{{ masakari_pki_intermediate_cert_name }}"
 
 # masakari destination files for SSL certificates
@@ -267,17 +269,21 @@ masakari_ssl_key: /etc/masakari/masakari.key
 
 # Installation details for SSL certificates
 masakari_pki_install_certificates:
-  - src: "{{ masakari_user_ssl_cert | default(masakari_pki_certs_path ~ 'masakari_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+  - name: "masakari_{{ ansible_facts['hostname'] }}"
+    type: "certificate_chain"
     dest: "{{ masakari_ssl_cert }}"
     owner: "{{ masakari_system_user_name }}"
     group: "{{ masakari_system_user_name }}"
-    mode: "0644"
-  - src: "{{ masakari_user_ssl_key | default(masakari_pki_keys_path ~ 'masakari_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    # standalone backend only
+    src: "{{ masakari_user_ssl_cert | default(masakari_pki_certs_path ~ 'masakari_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+  - name: "masakari_{{ ansible_facts['hostname'] }}"
+    type: "private_key"
     dest: "{{ masakari_ssl_key }}"
     owner: "{{ masakari_system_user_name }}"
     group: "{{ masakari_system_user_name }}"
-    mode: "0600"
+    # standalone backend only
+    src: "{{ masakari_user_ssl_key | default(masakari_pki_keys_path ~ 'masakari_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
 
 # Define user-provided SSL certificates
-# masakari_user_ssl_cert: <path to cert on ansible deployment host>
-# masakari_user_ssl_key: <path to cert on ansible deployment host>
+masakari_user_ssl_cert: ""
+masakari_user_ssl_key: ""

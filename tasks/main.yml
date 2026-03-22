@@ -90,9 +90,10 @@
         - masakari-config
         - pki
   vars:
+    pki_backend: "{{ masakari_pki_backend }}"
     pki_setup_host: "{{ masakari_pki_setup_host }}"
     pki_dir: "{{ masakari_pki_dir }}"
-    pki_create_certificates: "{{ masakari_user_ssl_cert is not defined and masakari_user_ssl_key is not defined }}"
+    pki_create_certificates: "{{ masakari_user_ssl_cert | length == 0 and masakari_user_ssl_key | length == 0 }}"
     pki_regen_cert: "{{ masakari_pki_regen_cert }}"
     pki_certificates: "{{ masakari_pki_certificates }}"
     pki_install_certificates: "{{ masakari_pki_install_certificates }}"
