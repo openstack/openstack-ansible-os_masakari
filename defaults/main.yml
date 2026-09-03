@@ -77,8 +77,7 @@ masakari_bin: "/openstack/venvs/masakari-{{ masakari_venv_tag }}/bin"
 # Common pip packages
 masakari_pip_packages:
   - cryptography
-  - "git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}#egg=masakari"
-  - masakari
+  - "masakari@git+{{ masakari_git_repo }}@{{ masakari_git_install_branch }}"
   - keystonemiddleware
   - osprofiler
   - PyMySQL
@@ -96,7 +95,7 @@ masakari_pip_packages:
 masakari_memcached_servers: "{{ memcached_servers }}"
 
 masakari_monitor_pip_packages:
-  - "git+{{ masakari_monitors_git_repo }}@{{ masakari_monitors_git_install_branch }}#egg=masakari-monitors"
+  - "masakari-monitors@git+{{ masakari_monitors_git_repo }}@{{ masakari_monitors_git_install_branch }}"
   - systemd-python
 
 ## Tunable overrides
